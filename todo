@@ -147,7 +147,7 @@ if __name__ == '__main__':
 
 	function_name = routes[ args.todo_command ]
 
-	todo_list = FileTodoList(path='TODO')
+	todo_list = FileTodoList(path='my_todos')
 	todo_function = getattr(todo_list, function_name)
 	result = todo_function(args)
 
