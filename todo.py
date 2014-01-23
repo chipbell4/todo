@@ -30,12 +30,8 @@ class TodoList(object):
 		with a todo field on it. Attempts to remove the item,
 		whether it is an integer or a string
 		'''
-		k = -1
-		if type(args.todo) == int:
-			k = int(args.todo)
-		else:
-			k = self.find(args.todo)
-		self.__todoList.pop(k)
+		index = self.find(args.todo)
+		self.__todoList.pop(index)
 		
 	def _findByIndex(self, index):
 		'''Essentially returns the index passed, as an integer. However,
