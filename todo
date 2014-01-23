@@ -116,13 +116,13 @@ class ArgumentParserFactory:
 	# builders for the command
 	@staticmethod
 	def createAddCommand(parser):
-		add_parser = parser.add_parser('add', help='add help')
+		add_parser = parser.add_parser('add', help='Add a new todo item')
 		add_parser.add_argument('todo', type=str, help='The todo to add')
 
 	@staticmethod
 	def createCompleteCommand(parser):
-		complete_parser = parser.add_parser('complete', help='complete help')
-		complete_parser.add_argument('todo', help='The todo to complete')
+		complete_parser = parser.add_parser('complete', help='Mark a todo as complete')
+		complete_parser.add_argument('todo', help='The todo to complete (text or index)')
 
 	@staticmethod
 	def createListCommand(parser):
@@ -130,7 +130,7 @@ class ArgumentParserFactory:
 	
 	@staticmethod
 	def createMoveCommand(parser):
-		move_parser = parser.add_parser('move', help='move help')
+		move_parser = parser.add_parser('move', help='Moves <todo> (an index or text) to the index provided by <new_location>')
 		move_parser.add_argument('todo', help='The todo to move')
 		move_parser.add_argument('new_location', help='The new location to move it to')
 
