@@ -37,15 +37,36 @@ class TodoList(object):
 		'''
 		return self.__todoList[k]
 
-	def find(self, s):
+	def find(self, todo):
+		'''Attempts to find a todo using text or index, depending on the input.
+		If the the input is numeric it will search by index. Otherwise, it will
+		search by text
+		'''
+		todo = str(todo)
+		if todo.isdigit():
+			return self._findByIndex(todo)
+		else:
+			return self._findByText(todo)
+
+	def _findByIndex(self, index):
+		'''Essentially returns the index passed, as an integer. However,
+		if the index is out of bounds for the todo list, it will return -1
+		'''
+		index = int(index)
+		if index >= len(self.__todoList):
+			return -1
+		else:
+			return index
+
+	def _findByText(self, text):
 		'''Returns the index of a particular todo item, returning -1
 		if the todo cannot be found
 		'''
-		s = s.lower()
-		lowerTodo = map(lambda x : x.lower(), self.__todoList)
-		for k, item in enumerate(lowerTodo):
-			if s in item:
-				return k
+		text = text.lower()
+		lowerTodo = map(lambda todo : todo.lower(), self.__todoList)
+		for index, todo in enumerate(lowerTodo):
+			if text in todo:
+				return index
 		return -1
 
 	def complete(self, args):
