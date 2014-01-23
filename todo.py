@@ -13,6 +13,7 @@ class TodoList(object):
 		a todo key on it
 		'''
 		self._pushTodoRaw(args.todo)
+		return "Added new todo \"{0}\" at {1}".format(args.todo, len(self.__todoList)-1)
 
 	def find(self, todo):
 		'''Attempts to find a todo using text or index, depending on the input.
@@ -31,7 +32,8 @@ class TodoList(object):
 		whether it is an integer or a string
 		'''
 		index = self.find(args.todo)
-		self.__todoList.pop(index)
+		todo = self.__todoList.pop(index)
+		return "Marked #{0}: \"{1}\" as completed".format(index, todo)
 		
 	def _findByIndex(self, index):
 		'''Essentially returns the index passed, as an integer. However,
