@@ -24,9 +24,9 @@ class TodoList(object):
 		'''Appends a new todo onto the internal todo list. Expects an object with
 		a todo key on it
 		'''
-		self.pushTodoRaw(args.todo)
+		self._pushTodoRaw(args.todo)
 
-	def pushTodoRaw(self, todo):
+	def _pushTodoRaw(self, todo):
 		''' an inheritable function to allow subclasses to push onto
 		the internal todo list with a raw string
 		'''
@@ -92,7 +92,7 @@ class FileTodoList(TodoList):
 		with open(self.path, 'r') as f:
 			for item in f.read().split('\n'):
 				if len(item.strip()) > 0:
-					super(FileTodoList, self).pushTodoRaw(item)
+					super(FileTodoList, self)._pushTodoRaw(item)
 	
 	def write(self):
 		'''Writes the todo list to a file
