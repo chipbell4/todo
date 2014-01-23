@@ -9,23 +9,38 @@ class TodoList(object):
 		self.read()
 	
 	def read(self):
+		'''A No-op function for reading a todo list from some storage medium
+		This method is intended to be overridden by a child class
+		'''
 		pass
 	
 	def write(self):
+		'''A No-op function for writing a todo list back to some storage medium
+		This method is intended to be overridden by a child class
+		'''
 		pass
 
 	def add(self, args):
+		'''Appends a new todo onto the internal todo list. Expects an object with
+		a todo key on it
+		'''
 		self.pushTodoRaw(args.todo)
 
-	# an inheritable function to allow subclasses to push onto
-	# the internal todo list
 	def pushTodoRaw(self, todo):
+		''' an inheritable function to allow subclasses to push onto
+		the internal todo list with a raw string
+		'''
 		self.__todoList.append(todo)
 
 	def get(self, k):
+		'''Gets the todo item at a particular index of the list
+		'''
 		return self.__todoList[k]
 
 	def find(self, s):
+		'''Returns the index of a particular todo item, returning -1
+		if the todo cannot be found
+		'''
 		s = s.lower()
 		lowerTodo = map(lambda x : x.lower(), self.__todoList)
 		for k, item in enumerate(lowerTodo):
@@ -34,6 +49,10 @@ class TodoList(object):
 		return -1
 
 	def complete(self, args):
+		'''Removes an item from the todo list. Expects an object
+		with a todo field on it. Attempts to remove the item,
+		whether it is an integer or a string
+		'''
 		k = -1
 		if type(args.todo) == int:
 			k = int(args.todo)
@@ -42,9 +61,14 @@ class TodoList(object):
 		self.__todoList.pop(k)
 
 	def list_all(self, args):
+		'''Lists all items in the todo list
+		'''
 		return '\n'.join(self.__todoList)
 
 	def move(self, args):
+		'''Moves an item designated by args.todo to the index
+		given by args.new_location
+		'''
 		k = -1
 		if type(args.todo) == int:
 			k = int(args.todo)
@@ -60,6 +84,8 @@ class FileTodoList(TodoList):
 		self.parent.__init__()
 	
 	def read(self):
+		'''Reads the todo list from a file
+		'''
 		# create the file if it doesn't exist
 		if not os.path.isfile(self.path):
 			self.write()
@@ -69,6 +95,8 @@ class FileTodoList(TodoList):
 					super(FileTodoList, self).pushTodoRaw(item)
 	
 	def write(self):
+		'''Writes the todo list to a file
+		'''
 		with open(self.path, 'w') as f:
 			f.write(self.list_all(None))
 
