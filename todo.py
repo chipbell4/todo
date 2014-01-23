@@ -123,9 +123,10 @@ class FileTodoList(TodoList):
 
 # a class to build the command line parser for the todo list
 class ArgumentParserFactory:
-	# the main factory method
 	@staticmethod
 	def make():
+		'''Creates a new argument parser for the todo list, handling all of the sub-commands
+		'''
 		parser = argparse.ArgumentParser(description='A Command-line based todo manager')
 		subparser = parser.add_subparsers(dest='todo_command')
 		ArgumentParserFactory.createAddCommand(subparser)
@@ -137,20 +138,28 @@ class ArgumentParserFactory:
 	# builders for the command
 	@staticmethod
 	def createAddCommand(parser):
+		'''Sets up the add command
+		'''
 		add_parser = parser.add_parser('add', help='Add a new todo item')
 		add_parser.add_argument('todo', type=str, help='The todo to add')
 
 	@staticmethod
 	def createCompleteCommand(parser):
+		'''Sets up the complete command
+		'''
 		complete_parser = parser.add_parser('complete', help='Mark a todo as complete')
 		complete_parser.add_argument('todo', help='The todo to complete (text or index)')
 
 	@staticmethod
 	def createListCommand(parser):
+		'''Sets up the list command
+		'''
 		list_parser = parser.add_parser('list', help='Lists every todo')
 	
 	@staticmethod
 	def createMoveCommand(parser):
+		'''Sets up the move command
+		'''
 		move_parser = parser.add_parser('move', help='Moves <todo> (an index or text) to the index provided by <new_location>')
 		move_parser.add_argument('todo', help='The todo to move')
 		move_parser.add_argument('new_location', help='The new location to move it to')
@@ -159,6 +168,8 @@ if __name__ == '__main__':
 	parser = ArgumentParserFactory.make()
 	args = parser.parse_args()
 
+	# A "mapper" between the todo command name and the function on the todo class
+	# Note that list is the only odd case, since list is a built in function in Python
 	routes = {
 		'add': 'add',
 		'list': 'list_all',
@@ -166,12 +177,18 @@ if __name__ == '__main__':
 		'move' : 'move'
 			}
 
+	# map the command to a function name
 	function_name = routes[ args.todo_command ]
 
 	todo_list = FileTodoList(path='my_todos')
-	todo_function = getattr(todo_list, function_name)
-	result = todo_function(args)
 
+	# get the function corresponding to the command passed
+	todo_function = getattr(todo_list, function_name)
+
+	# execute and print the result, if any
+	result = todo_function(args)
 	if result != None:
 		print result
+
+	# save any changes to the todo list
 	todo_list.write()
