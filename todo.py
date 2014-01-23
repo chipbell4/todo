@@ -70,13 +70,11 @@ class TodoList(object):
 		'''Moves an item designated by args.todo to the index
 		given by args.new_location
 		'''
-		k = -1
-		if type(args.todo) == int:
-			k = int(args.todo)
-		else:
-			k = self.find(args.todo)
-		s = self.__todoList.pop(k)
-		self.__todoList.insert(int(args.new_location), s)
+		old_location = self.find(args.todo)
+		new_location = int(args.new_location)
+		todo = self.__todoList.pop(old_location)
+		self.__todoList.insert(new_location, todo)
+		return "Todo \"{0}\" has been moved from {1} to {2}".format(todo, old_location, new_location)
 	
 	def _pushTodoRaw(self, todo):
 		''' an inheritable function to allow subclasses to push onto
