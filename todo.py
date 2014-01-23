@@ -7,35 +7,12 @@ class TodoList(object):
 	def __init__(self):
 		self.__todoList = []
 		self.read()
-	
-	def read(self):
-		'''A No-op function for reading a todo list from some storage medium
-		This method is intended to be overridden by a child class
-		'''
-		pass
-	
-	def write(self):
-		'''A No-op function for writing a todo list back to some storage medium
-		This method is intended to be overridden by a child class
-		'''
-		pass
 
 	def add(self, args):
 		'''Appends a new todo onto the internal todo list. Expects an object with
 		a todo key on it
 		'''
 		self._pushTodoRaw(args.todo)
-
-	def _pushTodoRaw(self, todo):
-		''' an inheritable function to allow subclasses to push onto
-		the internal todo list with a raw string
-		'''
-		self.__todoList.append(todo)
-
-	def get(self, k):
-		'''Gets the todo item at a particular index of the list
-		'''
-		return self.__todoList[k]
 
 	def find(self, todo):
 		'''Attempts to find a todo using text or index, depending on the input.
@@ -48,6 +25,18 @@ class TodoList(object):
 		else:
 			return self._findByText(todo)
 
+	def complete(self, args):
+		'''Removes an item from the todo list. Expects an object
+		with a todo field on it. Attempts to remove the item,
+		whether it is an integer or a string
+		'''
+		k = -1
+		if type(args.todo) == int:
+			k = int(args.todo)
+		else:
+			k = self.find(args.todo)
+		self.__todoList.pop(k)
+		
 	def _findByIndex(self, index):
 		'''Essentially returns the index passed, as an integer. However,
 		if the index is out of bounds for the todo list, it will return -1
@@ -69,17 +58,10 @@ class TodoList(object):
 				return index
 		return -1
 
-	def complete(self, args):
-		'''Removes an item from the todo list. Expects an object
-		with a todo field on it. Attempts to remove the item,
-		whether it is an integer or a string
+	def get(self, k):
+		'''Gets the todo item at a particular index of the list
 		'''
-		k = -1
-		if type(args.todo) == int:
-			k = int(args.todo)
-		else:
-			k = self.find(args.todo)
-		self.__todoList.pop(k)
+		return self.__todoList[k]
 
 	def list_all(self, args):
 		'''Lists all items in the todo list
@@ -97,6 +79,24 @@ class TodoList(object):
 			k = self.find(args.todo)
 		s = self.__todoList.pop(k)
 		self.__todoList.insert(int(args.new_location), s)
+	
+	def _pushTodoRaw(self, todo):
+		''' an inheritable function to allow subclasses to push onto
+		the internal todo list with a raw string
+		'''
+		self.__todoList.append(todo)
+	
+	def read(self):
+		'''A No-op function for reading a todo list from some storage medium
+		This method is intended to be overridden by a child class
+		'''
+		pass
+	
+	def write(self):
+		'''A No-op function for writing a todo list back to some storage medium
+		This method is intended to be overridden by a child class
+		'''
+		pass
 
 class FileTodoList(TodoList):
 	def __init__(self, path='.todo'):
